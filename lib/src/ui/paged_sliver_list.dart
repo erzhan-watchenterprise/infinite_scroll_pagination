@@ -26,6 +26,7 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
     this.itemExtent,
     this.semanticIndexCallback,
     this.shrinkWrapFirstPageIndicators = false,
+    this.useSuperSliverList = true,
     Key? key,
   })  : _separatorBuilder = null,
         super(key: key);
@@ -40,6 +41,7 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
     this.itemExtent,
     this.semanticIndexCallback,
     this.shrinkWrapFirstPageIndicators = false,
+    this.useSuperSliverList = true,
     Key? key,
   })  : _separatorBuilder = separatorBuilder,
         super(key: key);
@@ -70,6 +72,9 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
 
   /// Corresponds to [PagedSliverBuilder.shrinkWrapFirstPageIndicators].
   final bool shrinkWrapFirstPageIndicators;
+
+  /// Whether to use [SuperSliverList] instead of the normal [SliverList]
+  final bool useSuperSliverList;
 
   @override
   Widget build(BuildContext context) =>
@@ -126,9 +131,9 @@ class PagedSliverList<PageKeyType, ItemType> extends StatelessWidget {
     final itemExtent = this.itemExtent;
 
     return (itemExtent == null || _separatorBuilder != null)
-        ? SuperSliverList(
-            delegate: delegate,
-          )
+        ? useSuperSliverList
+            ? SuperSliverList(delegate: delegate)
+            : SliverList(delegate: delegate)
         : SliverFixedExtentList(
             delegate: delegate,
             itemExtent: itemExtent,
